@@ -1,4 +1,5 @@
 const autoBind = require("auto-bind");
+const ClientError = require("../../exceptions/ClientError");
 
 class AlbumHandler {
   constructor(service, validator) {
