@@ -13,16 +13,15 @@ const init = async () => {
     host: process.env.HOST,
   });
 
-  await server.register({
-    plugin: album,
-    options: {
-      service: albumService,
-      validator: {
-        albumValidator: AlbumValidator,
-        songValidator: SongValidator,
+  await server.register([
+    {
+      plugin: album,
+      options: {
+        service: albumService,
+        validator: AlbumValidator,
       },
     },
-  });
+  ]);
   server.ext("onPreResponse", (request, h) => {
     // mendapatkan konteks response dari request
     const { response } = request;
