@@ -19,7 +19,8 @@ class AlbumService {
     if (!result.rows[0].id) {
       throw InvariantError("Album gagal ditambahkan");
     }
-    return result.rows[0].id;
+    const responseSuccess = `album-${result.rows[0].id}`;
+    return responseSuccess;
   }
 }
 
