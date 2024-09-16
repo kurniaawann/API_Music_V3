@@ -1,6 +1,7 @@
 const { nanoid } = require("nanoid");
 const { Pool } = require("pg");
 const mapDBToModel = require("../utils/MapDBToModel");
+const NotFoundError = require("../exceptions/NotFoundError");
 
 class SongService {
   constructor() {
@@ -55,6 +56,17 @@ class SongService {
     const result = await this._Pool.query(query);
     if (!result.rows.length) {
       throw new NotFoundError("Gagal memperbarui song. Id tidak ditemukan");
+    }
+  }
+
+  async deleteSongById(id) {
+    const query = {
+      text: "DELETE FROM song WHERE id = $1 RETURNING id",
+      values: [id],
+    };
+    const result = await this._Pool.query(query);
+    if (!result.rows.length) {
+      throw new NotFoundError("Catatan gagal dihapus. Id tidak ditemukan");
     }
   }
 }
