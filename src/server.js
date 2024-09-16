@@ -3,6 +3,7 @@ const album = require("./api/album");
 const AlbumService = require("./service/AlbumService");
 const AlbumValidator = require("./validator/album");
 const ClientError = require("./exceptions/ClientError");
+const { SongValidator } = require("./validator/song");
 require("dotenv").config();
 
 const init = async () => {
@@ -16,7 +17,10 @@ const init = async () => {
     plugin: album,
     options: {
       service: albumService,
-      validator: AlbumValidator,
+      validator: {
+        albumValidator: AlbumValidator,
+        songValidator: SongValidator,
+      },
     },
   });
   server.ext("onPreResponse", (request, h) => {
