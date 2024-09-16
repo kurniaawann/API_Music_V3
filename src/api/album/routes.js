@@ -14,6 +14,11 @@ const routes = (handler) => [
     path: "/album/{id}",
     handler: handler.putAlbumByIdHandler,
   },
+  {
+    method: "DELETE",
+    path: "/album/{id}",
+    handler: handler.deleteAlbumByIdhandler,
+  },
 ];
 
 module.exports = routes;

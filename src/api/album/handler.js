@@ -44,6 +44,15 @@ class AlbumHandler {
       message: "Catatan berhasil diperbarui",
     };
   }
+
+  async deleteAlbumByIdhandler(request) {
+    const { id } = request.params;
+    await this._service.deleteAlbumById(id);
+    return {
+      status: "success",
+      message: "Catatan berhasil dihapus",
+    };
+  }
 }
 
 module.exports = {
