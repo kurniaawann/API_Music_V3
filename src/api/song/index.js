@@ -1,4 +1,3 @@
-const { register } = require("../album");
 const SongHandler = require("./handler");
 const routes = require("./routes");
 
