@@ -37,6 +37,17 @@ class AlbumService {
 
     return result.rows[0];
   }
+
+  async editAlbumById(id, { name, year }) {
+    const query = {
+      text: "UPDATE album SET name = $1, year = $2 WHERE id = $3 RETURNING id",
+      values: [name, year, id],
+    };
+    const result = await this._Pool.query(query);
+    if (!result.rows.length) {
+      throw new NotFoundError("Gagal memperbarui catatan. Id tidak ditemukan");
+    }
+  }
 }
 
 module.exports = AlbumService;

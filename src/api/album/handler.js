@@ -34,6 +34,16 @@ class AlbumHandler {
       },
     };
   }
+
+  async putAlbumByIdHandler(request) {
+    this._validator.validateAlbumPayload(request.payload);
+    const { id } = request.params;
+    await this._service.editAlbumById(id, request.payload);
+    return {
+      status: "success",
+      message: "Catatan berhasil diperbarui",
+    };
+  }
 }
 
 module.exports = {
