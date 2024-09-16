@@ -1,11 +1,6 @@
 const Joi = require("joi");
 
-const BasicSongPayloadSchema = Joi.object({
-  name: Joi.string().required(),
-  year: Joi.number().required(),
-});
-
-const FullSongPayloadSchema = Joi.object({
+const SongPayloadSchema = Joi.object({
   title: Joi.string().required(),
   year: Joi.number().required(),
   genre: Joi.string().required(),
@@ -15,6 +10,5 @@ const FullSongPayloadSchema = Joi.object({
 });
 
 module.exports = {
-  BasicSongPayloadSchema,
-  FullSongPayloadSchema,
+  SongPayloadSchema,
 };

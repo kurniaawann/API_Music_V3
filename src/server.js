@@ -24,7 +24,6 @@ const init = async () => {
         validator: AlbumValidator,
       },
     },
-
     {
       plugin: song,
       options: {
