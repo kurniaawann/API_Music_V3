@@ -1,4 +1,5 @@
 const autoBind = require("auto-bind");
+const mapDBToModel = require("../../utils/MapDBToModel");
 
 class SongHandler {
   constructor(service, validator) {
@@ -35,6 +36,20 @@ class SongHandler {
 
   async getSongsHandler() {
     const songs = await this._service.getAllSongs();
+    console.log(songs);
+    return {
+      status: "success",
+      data: {
+        songs,
+      },
+    };
+  }
+
+  async getSongByIdHandler(request) {
+    const { id } = request.params;
+
+    const songs = await this._service.getSongsById(id);
+
     return {
       status: "success",
       data: {

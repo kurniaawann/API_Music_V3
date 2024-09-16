@@ -1,5 +1,6 @@
 const { nanoid } = require("nanoid");
 const { Pool } = require("pg");
+const mapDBToModel = require("../utils/MapDBToModel");
 
 class SongService {
   constructor() {
@@ -30,6 +31,20 @@ class SongService {
         performer: row.performer,
       };
     });
+  }
+
+  async getSongsById(id) {
+    const query = {
+      text: "SELECT * FROM song WHERE id = $1",
+      values: [id],
+    };
+    const result = await this._Pool.query(query);
+
+    if (!result.rows.length) {
+      throw new NotFoundError("Song tidak ditemukan");
+    }
+
+    return result.rows.map(mapDBToModel)[0];
   }
 }
 
