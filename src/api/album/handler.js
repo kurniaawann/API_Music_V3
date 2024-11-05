@@ -56,6 +56,4 @@ class AlbumHandler {
   }
 }
 
-module.exports = {
-  AlbumHandler,
-};
+module.exports =  AlbumHandler
