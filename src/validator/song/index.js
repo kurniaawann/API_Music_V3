@@ -1,5 +1,5 @@
 const ClientError = require("../../exceptions/ClientError");
-const { SongPayloadSchema } = require("./scheme");
+const  SongPayloadSchema  = require("./scheme");
 
 const SongValidator = {
   validateSongPayload: (payload) => {

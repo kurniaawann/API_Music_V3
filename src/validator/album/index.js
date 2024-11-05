@@ -1,6 +1,6 @@
 const ClientError = require("../../exceptions/ClientError");
 
-const { AlbumPayloadSchema } = require("./scheme");
+const  AlbumPayloadSchema  = require("./scheme");
 
 const AlbumValidator = {
   validateAlbumPayload: (payload) => {
