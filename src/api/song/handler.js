@@ -36,7 +36,6 @@ class SongHandler {
 
   async getSongsHandler() {
     const songs = await this._service.getAllSongs();
-    console.log(songs);
     return {
       status: "success",
       data: {

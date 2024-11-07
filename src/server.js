@@ -45,7 +45,6 @@ const init = async () => {
         validator: SongValidator,
       },
     },
-
     {
       plugin:user,
       options:{
@@ -58,7 +57,6 @@ const init = async () => {
     // mendapatkan konteks response dari request
     const { response } = request;
 
-    console.log(response.statusCode);
 
     if (response instanceof Error) {
       // penanganan client error secara internal.
