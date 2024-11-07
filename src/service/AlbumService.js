@@ -55,7 +55,6 @@ class AlbumService {
       values: [id],
     };
     const result = await this._Pool.query(query);
-    console.log(result.rows.lenght);
     if (!result.rows.length) {
       throw new NotFoundError("Catatan gagal dihapus. Id tidak ditemukan");
     }
