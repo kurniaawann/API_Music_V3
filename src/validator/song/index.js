@@ -10,6 +10,4 @@ const SongValidator = {
   },
 };
 
-module.exports = {
-  SongValidator,
-};
+module.exports = SongValidator

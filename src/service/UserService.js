@@ -1,6 +1,6 @@
 const { nanoid } = require("nanoid");
 const { Pool } = require("pg");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 class UserService {
     constructor(){

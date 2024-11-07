@@ -52,7 +52,7 @@ const init = async () => {
         service:usersService,
         validator:UserValidator
       }
-    }
+    },
   ]);
   server.ext("onPreResponse", (request, h) => {
     // mendapatkan konteks response dari request
