@@ -33,10 +33,8 @@ class UserService {
         console.log(JSON.stringify(query));
         
         const result = await this._Pool.query(query);
-        console.log(result.rows.length );
 
-        if (result.rows.length > 0) {
-            console.log();
+        if (result.rowCount) {
             throw new InvariantError('Gagal menambahkan user. Username sudah digunakan')
         }
     }
