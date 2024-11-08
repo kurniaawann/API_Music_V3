@@ -1,5 +1,6 @@
 const Hapi = require("@hapi/hapi");
 const ClientError = require("./exceptions/ClientError");
+const Jwt = require('@hapi/jwt')
 
 //load ENV
 require("dotenv").config();
@@ -17,20 +18,35 @@ const  SongValidator  = require("./validator/song");
 //Users
 const user = require("./api/user");
 const UserService = require("./service/UserService");
-// const UserValidator = ('./validator/user')
 const  UserValidator  = require("./validator/user");
+
+//Authentication
+const authentications = require("./api/authentication");
+const AuthenticationService = require("./service/AuthenticationService");
+const TokenManager = require("./tokenize/TokenManager");
+const AuthenticationsValidator = require("./validator/authentication");
+
 
 const init = async () => {
   const albumService = new AlbumService();
   const songService = new SongService();
   const usersService = new UserService();
+  const authenticationService = new AuthenticationService();
 
   const server = Hapi.server({
     port: process.env.PORT,
     host: process.env.HOST,
   });
 
+  //register plugin external
+  await  server.register([
+    {
+      plugin:Jwt
+    }
+  ])
+
   await server.register([
+    //Album
     {
       plugin: album,
       options: {
@@ -38,6 +54,7 @@ const init = async () => {
         validator: AlbumValidator,
       },
     },
+    //song
     {
       plugin: song,
       options: {
@@ -45,6 +62,7 @@ const init = async () => {
         validator: SongValidator,
       },
     },
+    //user
     {
       plugin:user,
       options:{
@@ -52,6 +70,16 @@ const init = async () => {
         validator:UserValidator
       }
     },
+    //authentication
+    {
+      plugin:authentications,
+      options:{
+        authenticationService,
+        usersService,
+        tokenManager:TokenManager,
+        validator:AuthenticationsValidator
+      }
+    }
   ]);
   server.ext("onPreResponse", (request, h) => {
     // mendapatkan konteks response dari request
