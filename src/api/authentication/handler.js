@@ -12,7 +12,7 @@ class AuthenticationHandler {
     
     //!Login
     async postAuthenticationHandler(request, h){
-        this._validator.validatePostAuthenticationPayload(request.payload)
+        this._validator.validatePostAuthenticationPayload(request.payload);
         const {username, password} = request.payload
         const id = await this._usersService.verifyUserCredential(username, password);
         
@@ -30,13 +30,13 @@ class AuthenticationHandler {
                 refreshToken
             }
         });
-        response.code(201)
+        response.code(201);
         return response
     }
 
     //! get new access token
     async putAuthenticationHandler(request){
-        this._validator.validatePutAuthenticationPayload(request.payload)
+        this._validator.validatePutAuthenticationPayload(request.payload);
         const {refreshToken} = request.payload;
 
         await this._authenticationService.verifyRefreshToken(refreshToken);
@@ -49,6 +49,20 @@ class AuthenticationHandler {
             data:{
                 accessToken
             }
+        }
+    }
+
+    //!logout   
+    async deleteAuthenticationHandler(request){
+        this._validator.validateDeleteAuthenticationPayload(request.payload);
+
+        const {refreshToken} = request.payload
+        await this._authenticationService.verifyRefreshToken(refreshToken);
+        await this._authenticationService.deleteRefreshToken(refreshToken);
+
+        return {
+            status:'success',
+            message:'Refresh token berhasil dihapus'
         }
     }
 
