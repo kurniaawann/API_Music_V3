@@ -11,7 +11,6 @@ class UserService {
 
     async addUser ({username, password, fullname}){
         await this.verifyNewUsername(username);
-        console.log('dijalankan');
         const id = `user-${nanoid()}`;
         const hashedPassword = await bcrypt.hash(password, 10);
         const query = {
@@ -31,7 +30,6 @@ class UserService {
             text: 'SELECT * FROM users WHERE username = $1',
             values:[username]
         }
-        console.log(JSON.stringify(query));
         
         const result = await this._Pool.query(query);
 
@@ -48,21 +46,15 @@ class UserService {
 
         const result  = await this._Pool.query(query)
 
-        console.log(`ini adalah ${result.rows.length}`);
-
         if (!result.rows.length) {
             throw new AuthenticationError('Username atau password salah')
         }
-        console.log('Result:', result.rows[0]);
         const {id, password:hashedPassword} = result.rows[0];
         const match  = await bcrypt.compare(password, hashedPassword)
-
-        console.log(`ini adalah match ${match}`);
 
         if (!match) {
             throw new AuthenticationError('Username ')
         }
-        console.log(id);
         return id
     }
 }

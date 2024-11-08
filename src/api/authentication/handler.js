@@ -7,16 +7,6 @@ class AuthenticationHandler {
         this._usersService = usersService 
         this._tokenManager = tokenManager 
         this._validator = validator
-        if (!this._authenticationService || !this._usersService || !this._tokenManager || !this._validator) {
-            console.error("Dependencies not initialized correctly:", {
-                authenticationService: this._authenticationService,
-                usersService: this._usersService,
-                tokenManager: this._tokenManager,
-                validator: this._validator
-            });
-            console.log('error disini cuyy');
-         
-        };
         autoBind(this);
     }
     
@@ -27,20 +17,10 @@ class AuthenticationHandler {
         const id = await this._usersService.verifyUserCredential(username, password);
         
         
-        const accessToken  = this._tokenManager.generatedAccessToken(id);
-        const refreshToken = this.  _tokenManager.generatedRefreshToken(id);
+        const accessToken  = this._tokenManager.generatedAccessToken({id});
+        const refreshToken = this.  _tokenManager.generatedRefreshToken({id});
         
-        console.log(id);
-        console.log(accessToken);
-        console.log('refresh token,', refreshToken);
-
-
-        try {
-            await this._authenticationService.addRefreshToken(refreshToken);
-        } catch (error) {
-            console.error("Error adding refresh token:", error);
-            throw error; // Jika perlu, lempar kembali error untuk penanganan lebih lanjut
-        }
+        await this._authenticationService.addRefreshToken(refreshToken);
 
         const response = h.response({
             status:'success',
