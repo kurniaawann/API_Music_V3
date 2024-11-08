@@ -33,7 +33,7 @@ class AuthenticationService{
             values:[token]
         }
         
-        await this._Pool(query)
+        await this._Pool.query(query);
     }
 
 }
