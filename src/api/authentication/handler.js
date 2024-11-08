@@ -34,6 +34,24 @@ class AuthenticationHandler {
         return response
     }
 
+    //! get new access token
+    async putAuthenticationHandler(request){
+        this._validator.validatePutAuthenticationPayload(request.payload)
+        const {refreshToken} = request.payload;
+
+        await this._authenticationService.verifyRefreshToken(refreshToken);
+
+        const {id} = this._tokenManager.verifyRefreshToken(refreshToken);
+        const accessToken = this._tokenManager.generatedAccessToken({id});
+        return {
+            status:'success',
+            message:'Access Token berhasil di perbaharui',
+            data:{
+                accessToken
+            }
+        }
+    }
+
     
 }
 
