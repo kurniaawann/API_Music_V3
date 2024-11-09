@@ -32,7 +32,7 @@ class PlayListService {
         const query = {
             text: `SELECT p.id, p.name, u.username
                 FROM playlists p
-                LEFT JOIN users u ON u.id = p.owner
+                INNER JOIN users u ON u.id = p.owner
                 WHERE p.owner = $1`,
             values:[owner]
         };
