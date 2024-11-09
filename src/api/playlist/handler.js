@@ -53,6 +53,23 @@ class PlaylistHandler{
         }
 
     }
+
+    async postPlaylistAndSong(request,h){
+        this._validator.validatePlaylistAndSongPayload(request.payload);
+        console.log(`result payload ${request.payload}`);
+        const {songsId} = request.payload;
+        const{id} = request.params;
+
+        const {id: credentialId} = request. auth.credentials;
+        await this._service.addPlaylistAndSongs(songsId, id, {owner:credentialId});
+        const response = h.response({
+            status:'success',
+            message:'berhasil membuat playlist and song',
+        });
+        response.code(201);
+        return response
+    }
+    
 }
 
 module.exports = PlaylistHandler

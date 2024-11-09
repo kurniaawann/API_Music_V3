@@ -22,6 +22,14 @@ const routes = (handler)=>[
         options:{
             auth:'playlist_jwt'
         }
+    },
+    {
+        method:'POST',
+        handler:handler.postPlaylistAndSong,
+        path:'/playlist/{id}/songs',
+        options:{
+            auth:'playlist_jwt'
+        }
     }
 ]
 
