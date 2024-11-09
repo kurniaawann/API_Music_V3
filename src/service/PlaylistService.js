@@ -86,9 +86,9 @@ class PlayListService {
             throw new NotFoundError("Id song tidak ditemukan");
         }
 
-        if (result.rows[0].id === songsId) {
-            throw new InvariantError("Id yang dimasukkan harus berbeda"); 
-        }
+        // if (result.rows[0].id === songsId) {
+        //     throw new InvariantError("Id yang dimasukkan harus berbeda"); 
+        // }
         return result.rows[0].id;
     }
 
@@ -111,6 +111,52 @@ class PlayListService {
           throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
         }
       }
+    
+      async getPlaylistAndSong(owner) {
+        const query = {
+            text: `SELECT 
+                        playlists.id AS playlist_id,
+                        playlists.name AS playlist_name,
+                        users.username AS owner_username,
+                        song.id AS song_id,
+                        song.title AS song_title,
+                        song.performer AS song_performer
+                   FROM 
+                        playlists
+                        INNER JOIN playlist_songs ON playlists.id = playlist_songs.playlist_id
+                        INNER JOIN song ON song.id = playlist_songs.song_id
+                        INNER JOIN users ON users.id = playlists.owner
+                   WHERE 
+                        playlists.owner = $1;`,
+            values: [owner],
+        };
+    
+        const result = await this._Pool.query(query);
+    
+        if (!result.rowCount) {
+            throw new NotFoundError('Playlist dan songs tidak ditemukan');
+        }
+    
+        // Mengelompokkan data menjadi format yang diinginkan
+        const playlistData = result.rows.reduce((acc, row) => {
+            if (!acc.id) {
+                acc.id = row.playlist_id;
+                acc.name = row.playlist_name;
+                acc.username = row.owner_username;
+                acc.songs = [];
+            }
+            acc.songs.push({
+                id: row.song_id,
+                title: row.song_title,
+                performer: row.song_performer,
+            });
+            return acc;
+        }, {});
+    
+        return playlistData;
+    }
+    
+
 
 
 }

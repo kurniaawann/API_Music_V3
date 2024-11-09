@@ -53,7 +53,6 @@ class PlaylistHandler{
 
     async postPlaylistAndSong(request,h){
         this._validator.validatePlaylistAndSongPayload(request.payload);
-        console.log(`result payload ${request.payload}`);
         const {songsId} = request.payload;
         const{id} = request.params;
 
@@ -67,6 +66,17 @@ class PlaylistHandler{
         return response
     }
     
+    async getPlaylistAndSong(request,h){
+        const {id: credentialId} = request.auth.credentials;
+        const playlist = await this._service.getPlaylistAndSong(credentialId)
+
+        return {
+            status:'sucess',
+            data:{
+                playlist
+            }
+        }
+    }
 }
 
 module.exports = PlaylistHandler

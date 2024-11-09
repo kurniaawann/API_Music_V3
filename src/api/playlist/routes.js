@@ -30,6 +30,14 @@ const routes = (handler)=>[
         options:{
             auth:'playlist_jwt'
         }
+    },
+    {
+        method:'GET',
+        handler:handler.getPlaylistAndSong,
+        path:'/playlist/{id}/songs',
+        options:{
+            auth:'playlist_jwt'
+        }
     }
 ]
 
