@@ -41,11 +41,8 @@ class PlaylistHandler{
     async deletePlaylistHandler(request, h){
         const {id: credentialId} = request.auth.credentials;
         const {id} = request.params;
-
-        console.log(id);
-        console.log(credentialId);
-
-        await this._service.deletePlaylistByid(id, {owner:credentialId});
+        await this._service.verifiyPlaylistOwner(id ,credentialId)
+        await this._service.deletePlaylistByid(id);
 
         return {
             status:'success',

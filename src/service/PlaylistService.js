@@ -2,6 +2,7 @@ const { nanoid } = require("nanoid");
 const { Pool } = require("pg");
 const InvariantError = require("../exceptions/InvariantError");
 const NotFoundError = require("../exceptions/NotFoundError");
+const AuthorizationError = require("../exceptions/AuthorizationError");
 
 
 
@@ -45,16 +46,16 @@ class PlayListService {
         return result.rows
     }
 
-    async deletePlaylistByid(id, {owner}){
+    async deletePlaylistByid(id){
         const query = {
-            text:'DELETE FROM playlists WHERE id = $1 AND owner = $2 RETURNING id',
-            values:[id, owner],
+            text:'DELETE FROM playlists WHERE id = $1',
+            values:[id],
         }
 
         const result = await this._Pool.query(query)
 
         if (!result.rowCount) {
-            throw new NotFoundError("Playlist gagal dihapus. Id atau owner tidak ditemukan.");
+            throw new NotFoundError("Playlist gagal dihapus id tidak ditemukan");
         }
     }
 
@@ -74,24 +75,44 @@ class PlayListService {
 
 
     async checkAndGetSongId(songsId){
-
         const query = {
             text:'SELECT id FROM song WHERE id = $1',
             values:[songsId]
         }
         
         const result = await this._Pool.query(query);
-
        
         if (!result.rowCount) {
             throw new NotFoundError("Id song tidak ditemukan");
         }
 
         if (result.rows[0].id === songsId) {
-            throw new NotFoundError("Id yang dimasukkan harus berbeda"); 
+            throw new InvariantError("Id yang dimasukkan harus berbeda"); 
         }
         return result.rows[0].id;
     }
+
+
+    async verifiyOwner(id,owner){
+        const query = {
+          text:'SELECT id FROM playlists WHERE id = $1',
+          values:[id]
+        };
+        const result = await this._Pool.query(query);
+        
+        if (!result.rows.length) {
+          throw new NotFoundError('Playlist tidak ditemukan');
+        }
+    
+        const palylist = result.rows[0];
+
+    
+        if (palylist.owner !== owner) {
+          throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
+        }
+      }
+
+
 }
 
 
