@@ -7,7 +7,7 @@ class PlaylistHandler{
         autoBind(this);
     }
 
-    async PostPlaylistHandler(request, h){
+    async postPlaylistHandler(request, h){
         this._validator.validatePlaylistPayload(request.payload);
         const {name} = request.payload
         const {id: credentialId} = request.auth.credentials;
@@ -23,6 +23,19 @@ class PlaylistHandler{
         }); 
         response.code(201);
         return response;
+    }
+
+
+    async getPlaylistHandler(request, h){
+        const {id: credentialId} = request.auth.credentials;
+        const playlist = await this._service.getPlaylist({owner:credentialId})
+
+        return {
+            status:'sucess',
+            data:{
+                playlist
+            }
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 const { nanoid } = require("nanoid");
 const { Pool } = require("pg");
 const InvariantError = require("../exceptions/InvariantError");
+const NotFoundError = require("../exceptions/NotFoundError");
 
 
 
@@ -25,6 +26,26 @@ class PlayListService {
         }
 
         return result.rows[0].id
+    }
+
+    async getPlaylist({ owner }) {
+        const query = {
+            // text: 'SELECT id, name, username FROM playlists LEFT JOIN users ON users.id = $1 WHERE owner = $1',
+            text: `SELECT p.id, p.name, u.username
+                FROM playlists p
+                LEFT JOIN users u ON u.id = p.owner
+                WHERE p.owner = $1`,
+            values:[owner]
+        };
+        console.log(owner);
+
+        const result = await this._Pool.query(query)
+
+        if (result.rowCount == 0) {
+         throw new NotFoundError('Playlist tidak ditemukan')
+        }
+
+        return result.rows
     }
 }
 
