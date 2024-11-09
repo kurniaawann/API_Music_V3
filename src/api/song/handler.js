@@ -1,5 +1,4 @@
 const autoBind = require("auto-bind");
-const mapDBToModel = require("../../utils/MapDBToModel");
 
 class SongHandler {
   constructor(service, validator) {
@@ -11,8 +10,7 @@ class SongHandler {
   async postSongHandler(request, h) {
     this._validator.validateSongPayload(request.payload);
 
-    const { title, year, genre, performer, duration, albumId } =
-      request.payload;
+    const { title, year, genre, performer, duration, albumId } =request.payload;
 
     const songId = await this._service.addSong({
       title,
