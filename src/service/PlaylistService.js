@@ -45,6 +45,19 @@ class PlayListService {
         }
         return result.rows
     }
+
+    async deletePlaylistByid(id, {owner}){
+        const query = {
+            text:'DELETE FROM playlists WHERE id = $1 AND owner = $2 RETURNING id',
+            values:[id, owner],
+        }
+
+        const result = await this._Pool.query(query)
+
+        if (!result.rowCount) {
+            throw new NotFoundError("Playlist gagal dihapus. Id atau owner tidak ditemukan.");
+        }
+    }
 }
 
 

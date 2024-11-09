@@ -28,7 +28,7 @@ class PlaylistHandler{
 
     async getPlaylistHandler(request, h){
         const {id: credentialId} = request.auth.credentials;
-        const playlist = await this._service.getPlaylist({owner:credentialId})
+        const playlist = await this._service.getPlaylist({owner:credentialId});
 
         return {
             status:'sucess',
@@ -36,6 +36,22 @@ class PlaylistHandler{
                 playlist
             }
         }
+    }
+
+    async deletePlaylistHandler(request, h){
+        const {id: credentialId} = request.auth.credentials;
+        const {id} = request.params;
+
+        console.log(id);
+        console.log(credentialId);
+
+        await this._service.deletePlaylistByid(id, {owner:credentialId});
+
+        return {
+            status:'success',
+            message:'playlist berhasil dihapus'
+        }
+
     }
 }
 

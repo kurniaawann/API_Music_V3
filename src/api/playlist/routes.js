@@ -14,6 +14,14 @@ const routes = (handler)=>[
         options:{
             auth:'playlist_jwt'
         }
+    },
+    {
+        method:'DELETE',
+        handler:handler.deletePlaylistHandler,
+        path:'/playlist/{id}',
+        options:{
+            auth:'playlist_jwt'
+        }
     }
 ]
 
