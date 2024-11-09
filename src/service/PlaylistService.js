@@ -40,7 +40,6 @@ class PlayListService {
         const result = await this._Pool.query(query)
 
         if (!result.rowCount) {
-            console.log('jalan');
             throw new NotFoundError('Playlist tidak ditemukan');
         }
         return result.rows
@@ -57,6 +56,41 @@ class PlayListService {
         if (!result.rowCount) {
             throw new NotFoundError("Playlist gagal dihapus. Id atau owner tidak ditemukan.");
         }
+    }
+
+    async addPlaylistAndSongs(songsId, id, {owner}){
+        const generatedId = nanoid(16);
+        const plylistAndSongId = `playlistAndSong-${generatedId}`;
+        const getSongId = await this.checkAndGetSongId(songsId)
+
+        const query = {
+            text: "INSERT INTO playlist_songs VALUES ($1, $2, $3, $4)",
+            values:[plylistAndSongId, id, getSongId, owner],
+        }
+
+        await this._Pool.query(query);
+
+    }
+
+
+    async checkAndGetSongId(songsId){
+
+        const query = {
+            text:'SELECT id FROM song WHERE id = $1',
+            values:[songsId]
+        }
+        
+        const result = await this._Pool.query(query);
+
+       
+        if (!result.rowCount) {
+            throw new NotFoundError("Id song tidak ditemukan");
+        }
+
+        if (result.rows[0].id === songsId) {
+            throw new NotFoundError("Id yang dimasukkan harus berbeda"); 
+        }
+        return result.rows[0].id;
     }
 }
 
