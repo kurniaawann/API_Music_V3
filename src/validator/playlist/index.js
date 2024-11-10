@@ -1,4 +1,5 @@
 const ClientError = require('../../exceptions/ClientError');
+const InvariantError = require('../../exceptions/InvariantError');
 const {PostPlaylistPayloadSchema, PostPlaylistAndSongPayloadSchema} = require('./schema')
 
 const PlaylistValidator = {
