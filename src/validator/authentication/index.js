@@ -1,4 +1,4 @@
-const InvariantError = require('../../exceptions/InvariantError')
+const ClientError = require('../../exceptions/ClientError')
 const {
     PostAuthenticationPayloadSchema,
     DeleteAuthenticationPayloadSchema,
@@ -9,24 +9,25 @@ const {
 
 const AuthenticationsValidator = {
     validatePostAuthenticationPayload: (payload) => {
-        const validatoonResult = PostAuthenticationPayloadSchema.validate(payload)
+        const validationResult = PostAuthenticationPayloadSchema.validate(payload)
 
-        if (validatoonResult.error) {
-        throw new InvariantError(validatoonResult.error.message)    
+        if (validationResult.error) {
+        throw new ClientError(validationResult.error.message)    
         }
     },
     validatePutAuthenticationPayload: (payload) => {
-        const validatoonResult = PutAuthenticationPayloadSchema.validate(payload)
+        const validationResult = PutAuthenticationPayloadSchema.validate(payload)
 
-        if (validatoonResult.error) {
-        throw new InvariantError(validatoonResult.error.message)    
+        if (validationResult.error) {
+        throw new ClientError(validationResult.error.message)    
         }
     },
     validateDeleteAuthenticationPayload: (payload) => {
-        const validatoonResult = DeleteAuthenticationPayloadSchema.validate(payload)
+        const validationResult = DeleteAuthenticationPayloadSchema.validate(payload)
 
-        if (validatoonResult.error) {
-        throw new InvariantError(validatoonResult.error.message)    
+        if (validationResult.error) {
+            console.log("error");
+        throw new ClientError(validationResult.error.message)    
         }
     }
 }

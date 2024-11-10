@@ -57,10 +57,10 @@ class PlayListService {
         }
     }
 
-    async addPlaylistAndSongs(songsId, id, {owner}){
+    async addPlaylistAndSongs(songId, id, {owner}){
         const generatedId = nanoid(16);
         const plylistAndSongId = `playlistAndSong-${generatedId}`;
-        const getSongId = await this.checkAndGetSongId(songsId)
+        const getSongId = await this.checkAndGetSongId(songId)
 
         const query = {
             text: "INSERT INTO playlist_songs VALUES ($1, $2, $3, $4)",
@@ -72,10 +72,10 @@ class PlayListService {
     }
 
 
-    async checkAndGetSongId(songsId){
+    async checkAndGetSongId(songId){
         const query = {
             text:'SELECT id FROM song WHERE id = $1',
-            values:[songsId]
+            values:[songId]
         }
         
         const result = await this._Pool.query(query);

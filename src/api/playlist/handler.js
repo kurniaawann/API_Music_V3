@@ -28,12 +28,12 @@ class PlaylistHandler{
 
     async getPlaylistHandler(request, h){
         const {id: credentialId} = request.auth.credentials;
-        const playlist = await this._service.getPlaylist({owner:credentialId});
+        const playlists = await this._service.getPlaylist({owner:credentialId});
 
         return {
-            status:'sucess',
+            status:'success',
             data:{
-                playlist
+                playlists
             }
         }
     }
@@ -53,11 +53,12 @@ class PlaylistHandler{
 
     async postPlaylistAndSongHandler(request,h){
         this._validator.validatePlaylistAndSongPayload(request.payload);
-        const {songsId} = request.payload;
+        const {songId} = request.payload;
         const{id} = request.params;
 
         const {id: credentialId} = request. auth.credentials;
-        await this._service.addPlaylistAndSongs(songsId, id, {owner:credentialId});
+        await this._service.verifiyPlaylistOwner(id, credentialId)
+        await this._service.addPlaylistAndSongs(songId, id, {owner:credentialId});
         const response = h.response({
             status:'success',
             message:'berhasil membuat playlist and song',
@@ -68,10 +69,12 @@ class PlaylistHandler{
     
     async getPlaylistAndSongHandler(request){
         const {id: credentialId} = request.auth.credentials;
+        const{id} = request.params;
+        await this._service.verifiyPlaylistOwner(id, credentialId)
         const playlist = await this._service.getPlaylistAndSong(credentialId)
 
         return {
-            status:'sucess',
+            status:'success',
             data:{
                 playlist
             }
@@ -82,11 +85,11 @@ class PlaylistHandler{
         this._validator.validatePlaylistAndSongPayload(request.payload);
         const {id: credentialId} = request.auth.credentials;
         const {id} = request.params;
-        const {songsId} = request.payload
+        const {songId} = request.payload
         await this._service.verifiyPlaylistOwner(id,credentialId);
-        await this._service.deleteSongFromPlaylist(songsId);
+        await this._service.deleteSongFromPlaylist(songId);
         return {
-            status:'sucess',
+            status:'success',
             message:'Berhasil menghapus lagu dari daftar playlist'
         }
        

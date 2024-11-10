@@ -2,7 +2,7 @@ const routes = (handler)=>[
     {
         method:'POST',
         handler:handler.postPlaylistHandler,
-        path:'/playlist',
+        path:'/playlists',
         options:{
             auth:'playlist_jwt'
         }
@@ -10,7 +10,7 @@ const routes = (handler)=>[
     {
         method:'GET',
         handler:handler.getPlaylistHandler,
-        path:'/playlist',
+        path:'/playlists',
         options:{
             auth:'playlist_jwt'
         }
@@ -18,7 +18,7 @@ const routes = (handler)=>[
     {
         method:'DELETE',
         handler:handler.deletePlaylistHandler,
-        path:'/playlist/{id}',
+        path:'/playlists/{id}',
         options:{
             auth:'playlist_jwt'
         }
@@ -26,7 +26,7 @@ const routes = (handler)=>[
     {
         method:'POST',
         handler:handler.postPlaylistAndSongHandler,
-        path:'/playlist/{id}/songs',
+        path:'/playlists/{id}/songs',
         options:{
             auth:'playlist_jwt'
         }
@@ -34,7 +34,7 @@ const routes = (handler)=>[
     {
         method:'GET',
         handler:handler.getPlaylistAndSongHandler,
-        path:'/playlist/{id}/songs',
+        path:'/playlists/{id}/songs',
         options:{
             auth:'playlist_jwt'
         }
@@ -42,7 +42,7 @@ const routes = (handler)=>[
     {
         method:'DELETE',
         handler:handler.deletePlaylistAndSongHandler,
-        path:'/playlist/{id}/songs',
+        path:'/playlists/{id}/songs',
         options:{
             auth:'playlist_jwt'
         }

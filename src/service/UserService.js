@@ -3,6 +3,8 @@ const { Pool } = require("pg");
 const bcrypt = require('bcrypt');
 const InvariantError = require('../exceptions/InvariantError');
 const AuthenticationError = require("../exceptions/AuthenticationError");
+const NotFoundError = require("../exceptions/NotFoundError");
+const ClientError = require("../exceptions/ClientError");
 
 class UserService {
     constructor(){
@@ -34,7 +36,7 @@ class UserService {
         const result = await this._Pool.query(query);
 
         if (result.rowCount) {
-            throw new InvariantError('Gagal menambahkan user. Username sudah digunakan')
+            throw new ClientError('Gagal menambahkan user. Username sudah digunakan')
         }
     }
 
@@ -53,7 +55,7 @@ class UserService {
         const match  = await bcrypt.compare(password, hashedPassword)
 
         if (!match) {
-            throw new AuthenticationError('Username ')
+            throw new AuthenticationError('Username atau password salah')
         }
         return id
     }
