@@ -4,7 +4,7 @@ const PostPlaylistPayloadSchema = Joi.object({
     name: Joi.string().required()
 });
 const PostPlaylistAndSongPayloadSchema = Joi.object({
-    songsId: Joi.string().required()
+    songId: Joi.string().required()
 });
 
 
