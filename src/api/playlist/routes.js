@@ -25,7 +25,7 @@ const routes = (handler)=>[
     },
     {
         method:'POST',
-        handler:handler.postPlaylistAndSong,
+        handler:handler.postPlaylistAndSongHandler,
         path:'/playlist/{id}/songs',
         options:{
             auth:'playlist_jwt'
@@ -33,7 +33,15 @@ const routes = (handler)=>[
     },
     {
         method:'GET',
-        handler:handler.getPlaylistAndSong,
+        handler:handler.getPlaylistAndSongHandler,
+        path:'/playlist/{id}/songs',
+        options:{
+            auth:'playlist_jwt'
+        }
+    },
+    {
+        method:'DELETE',
+        handler:handler.deletePlaylistAndSongHandler,
         path:'/playlist/{id}/songs',
         options:{
             auth:'playlist_jwt'

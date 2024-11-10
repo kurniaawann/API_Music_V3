@@ -51,7 +51,7 @@ class PlaylistHandler{
 
     }
 
-    async postPlaylistAndSong(request,h){
+    async postPlaylistAndSongHandler(request,h){
         this._validator.validatePlaylistAndSongPayload(request.payload);
         const {songsId} = request.payload;
         const{id} = request.params;
@@ -66,7 +66,7 @@ class PlaylistHandler{
         return response
     }
     
-    async getPlaylistAndSong(request,h){
+    async getPlaylistAndSongHandler(request){
         const {id: credentialId} = request.auth.credentials;
         const playlist = await this._service.getPlaylistAndSong(credentialId)
 
@@ -76,6 +76,20 @@ class PlaylistHandler{
                 playlist
             }
         }
+    }
+
+    async deletePlaylistAndSongHandler (request){
+        this._validator.validatePlaylistAndSongPayload(request.payload);
+        const {id: credentialId} = request.auth.credentials;
+        const {id} = request.params;
+        const {songsId} = request.payload
+        await this._service.verifiyPlaylistOwner(id,credentialId);
+        await this._service.deleteSongFromPlaylist(songsId);
+        return {
+            status:'sucess',
+            message:'Berhasil menghapus lagu dari daftar playlist'
+        }
+       
     }
 }
 
