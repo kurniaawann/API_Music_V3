@@ -32,6 +32,11 @@ const playlist = require("./api/playlist");
 const PlaylistService = require("./service/PlaylistService");
 const PlaylistValidator  = require("./validator/playlist");
 
+//export
+const _exports = require('./api/export');
+const ProducerService = require('./service/rabbitmq/ProducerService');
+const ExportsValidator = require('./validator/exports');
+
 
 const init = async () => {
   const albumService = new AlbumService();
@@ -110,7 +115,14 @@ const init = async () => {
         service:playlistService,
         validator:PlaylistValidator
       }
-    }
+    },
+    {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        validator: ExportsValidator,
+      },
+    },
   ]);
   server.ext("onPreResponse", (request, h) => {
     // mendapatkan konteks response dari request
