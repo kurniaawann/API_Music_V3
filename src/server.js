@@ -116,11 +116,14 @@ const init = async () => {
         validator:PlaylistValidator
       }
     },
+        
+    //exxports
     {
       plugin: _exports,
       options: {
         service: ProducerService,
         validator: ExportsValidator,
+        playlistService:playlistService
       },
     },
   ]);
