@@ -105,23 +105,24 @@ class PlayListService {
         }
       }
     
-      async getPlaylistAndSong(owner) {
+      async getPlaylistAndSong(id) {
         const query = {
-            text: `SELECT 
-                        playlists.id AS playlist_id,
-                        playlists.name AS playlist_name,
-                        users.username AS owner_username,
-                        song.id AS song_id,
-                        song.title AS song_title,
-                        song.performer AS song_performer
-                   FROM 
-                        playlists
-                        INNER JOIN playlist_songs ON playlists.id = playlist_songs.playlist_id
-                        INNER JOIN song ON song.id = playlist_songs.song_id
-                        INNER JOIN users ON users.id = playlists.owner
-                   WHERE 
-                        playlists.owner = $1;`,
-            values: [owner],
+            text: `
+            SELECT 
+                playlist_songs.*,
+                song.id AS song_id,
+                song.title AS song_title,
+                song.performer AS song_performer,
+                playlists.name AS playlist_name,
+                users.username AS owner_username
+            FROM 
+                playlist_songs
+                JOIN song ON song.id = playlist_songs.song_id
+                JOIN playlists ON playlists.id = playlist_songs.playlist_id
+                JOIN users ON users.id = playlists.owner
+            WHERE 
+                playlist_songs.playlist_id = $1;`,
+            values: [id],
         };
     
         const result = await this._Pool.query(query);
