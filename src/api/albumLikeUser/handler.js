@@ -39,6 +39,7 @@ class AlbumLikeHandler{
                 likes
             }
         }); 
+        response.header('X-Data-Source', 'cache');
         response.code(200);
         return response;
     }
