@@ -7,4 +7,12 @@ const routes = (handler)=>[
             auth:'playlist_jwt'
         }
     },
+    {
+        method:'DELETE',
+        handler:handler.deleteAlbumLikeUserHandler,
+        path:'/albums/{id}/likes',
+        options:{
+            auth:'playlist_jwt'
+        }
+    },
 module.exports = routes

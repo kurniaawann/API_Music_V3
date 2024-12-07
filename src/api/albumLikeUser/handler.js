@@ -18,4 +18,15 @@ class AlbumLikeHandler{
         response.code(201);
         return response;
     }
+    async deleteAlbumLikeUserHandler(request, h){
+        const {id} = request.params
+
+        await this._service.deleteAlbumLikeUser(id);
+        const response = h.response({
+            status: "success",
+            message: "Berhasil menghapus album ini dari daftar suka",
+        }); 
+        response.code(200);
+        return response;
+    }
 module.exports = AlbumLikeHandler

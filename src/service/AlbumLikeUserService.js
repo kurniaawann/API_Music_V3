@@ -35,4 +35,15 @@ class AlbumLikeUserService {
         }
     }
 
+    async deleteAlbumLikeUser(albumId){
+        const query = {
+            text:'DELETE FROM user_album_like WHERE album_id = $1',
+            values:[albumId]
+        };
+        const result = await this._Pool.query(query);
+  
+        if (!result.rowCount) {
+        throw new NotFoundError(`Album tidak ditemukan.`);
+        }
+    }
 module.exports = AlbumLikeUserService
