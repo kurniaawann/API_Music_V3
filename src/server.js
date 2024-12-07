@@ -1,7 +1,8 @@
 const Hapi = require("@hapi/hapi");
 const ClientError = require("./exceptions/ClientError");
-const Jwt = require('@hapi/jwt')
-
+const Jwt = require('@hapi/jwt');
+const path = require('path');
+const Inert = require('@hapi/inert');
 //load ENV
 require("dotenv").config();
 
@@ -26,7 +27,6 @@ const AuthenticationService = require("./service/AuthenticationService");
 const TokenManager = require("./tokenize/TokenManager");
 const AuthenticationsValidator = require("./validator/authentication");
 
-
 //playlist
 const playlist = require("./api/playlist");
 const PlaylistService = require("./service/PlaylistService");
@@ -37,6 +37,11 @@ const _exports = require('./api/export');
 const ProducerService = require('./service/rabbitmq/ProducerService');
 const ExportsValidator = require('./validator/exports');
 
+//uploads
+const uploads = require('./api/uploads');
+const StorageService = require('./service/storage/StorageService');
+const UploadsValidator = require('./validator/uploads');
+
 
 const init = async () => {
   const albumService = new AlbumService();
@@ -44,17 +49,26 @@ const init = async () => {
   const usersService = new UserService();
   const authenticationService = new AuthenticationService();
   const playlistService = new PlaylistService()
+  const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
 
   const server = Hapi.server({
     port: process.env.PORT,
     host: process.env.HOST,
+    routes: {
+      cors: {
+        origin: ["*"],
+      },
+    },
   });
 
   //register plugin external
   await  server.register([
     {
       plugin:Jwt
-    }
+    },
+    {
+      plugin: Inert,
+    },
   ]);
   //mendefinisikan strategy authentikasi jwt
   server.auth.strategy('playlist_jwt', 'jwt', {
@@ -124,6 +138,14 @@ const init = async () => {
         service: ProducerService,
         validator: ExportsValidator,
         playlistService:playlistService
+      },
+    },
+    {
+      plugin: uploads,
+      options: {
+        service: storageService,
+        validator: UploadsValidator,
+        servicePostgre:albumService
       },
     },
   ]);
