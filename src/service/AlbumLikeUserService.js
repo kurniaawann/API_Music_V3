@@ -46,4 +46,18 @@ class AlbumLikeUserService {
         throw new NotFoundError(`Album tidak ditemukan.`);
         }
     }
+    async getAlbumLikeUser(userId, albumId){
+        const query = {
+            text:'SELECT * FROM user_album_like WHERE user_id = $1 AND album_id = $2',
+            values: [userId, albumId],
+        };
+        const result = await this._Pool.query(query);
+  
+        if (!result.rowCount) {
+        throw new NotFoundError(`Album tidak ditemukan.`);
+        }
+        return result.rowCount
+    }
+}
+
 module.exports = AlbumLikeUserService

@@ -15,4 +15,14 @@ const routes = (handler)=>[
             auth:'playlist_jwt'
         }
     },
+    {
+        method:'GET',
+        handler:handler.getAlbumLikeUserHandler,
+        path:'/albums/{id}/likes',
+        options:{
+            auth:'playlist_jwt'
+        }
+    },
+]
+
 module.exports = routes

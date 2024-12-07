@@ -29,4 +29,19 @@ class AlbumLikeHandler{
         response.code(200);
         return response;
     }
+    async getAlbumLikeUserHandler(request, h){
+        const {id: credentialId} = request.auth.credentials;
+        const {id} = request.params
+        const likes = await this._service.getAlbumLikeUser(credentialId, id);
+        const response = h.response({
+            status: "success",
+            data: {
+                likes
+            }
+        }); 
+        response.code(200);
+        return response;
+    }
+}
+
 module.exports = AlbumLikeHandler
