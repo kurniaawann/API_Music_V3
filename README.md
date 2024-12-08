@@ -12,7 +12,7 @@
 > 2. **`console.log`**:
 >     - Digunakan untuk menampilkan pesan ke konsol.
 >
-> ```
+> ```javascript
 > function helloWorld() {
 >     console.log("Hello, World!");
 > }
